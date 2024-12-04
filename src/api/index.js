@@ -2,7 +2,7 @@ import axios from "axios";
 
 import AuthService from "./services/auth.js";
 
-const baseURL = "api"
+const baseURL = "https://api-psicologo-ia.vercel.app"
 
 const httpClient = axios.create({ baseURL });
 
