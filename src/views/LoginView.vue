@@ -1,3 +1,48 @@
+<script setup>
+import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth.js";
+import { useRouter } from "vue-router";
+import { watch } from "vue";
+
+const authStore = useAuthStore();
+const { userLogin } = authStore;
+
+const error = ref(false);
+const router = useRouter();
+const disabled = ref(true);
+
+const payload = ref({
+  email: "",
+  senha: "",
+});
+
+const handleSubmit = async () => {
+  const login = await userLogin(payload.value);
+
+  if (login) {
+    localStorage.setItem("token-auth", login.token);
+
+    router.push({ path: "/about" });
+  } else {
+    error.value = true;
+
+    setTimeout(() => {
+      error.value = false;
+    }, 3000);
+  }
+};
+
+watch(payload.value, () => {
+  if (payload.value.email.length > 1 && payload.value.senha.length > 1) {
+    disabled.value = false;
+  } else {
+    disabled.value = true;
+  }
+});
+</script>
+
+
+
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
@@ -11,7 +56,7 @@
           <span class="mb-2 text-md">Email</span>
           <input
             type="text"
-            v-model="user.email"
+            v-model="payload.email"
             class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
             placeholder="Entre com seu email"
           />
@@ -20,7 +65,7 @@
           <span class="mb-2 text-md">Senha</span>
           <input
             type="password"
-            v-model="user.senha"
+            v-model="payload.senha"
             class="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
             placeholder="Entre com sua senha"
           />
@@ -33,7 +78,7 @@
           <span class="font-bold text-md"><router-link to="/forgotPassword">Esqueci minha senha</router-link></span>
         </div>
         <button
-          @click="login"
+          @click="handleSubmit"
           class="w-full bg-black text-white p-2 rounded-lg mb-6 hover:bg-white hover:text-black hover:border hover:border-gray-300"
         >
           Entrar
@@ -60,28 +105,3 @@
 <style scoped>
 /* Estilos personalizados aqui */
 </style>
-
-<script setup>
-import index from "@/api/index.js"
-import {reactive} from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const user = reactive ({
-  email:'',
-  senha:''
-})
-
-async function login() {
-    try {
-      const {data} = await index.post('/login', user)
-      
-      if (data.auth == true) {
-        router.push('/forgotPassword')
-      }
-    } catch (error) {
-      console.log(error.response.data)
-    }
-}
-</script>
