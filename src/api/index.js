@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import AuthService from "./services/auth.js";
+import UserService from "./services/user.js"
+import { h } from "vue";
 
 const baseURL = "https://api-psicologo-ia.vercel.app"
 
@@ -43,7 +45,7 @@ httpClient.interceptors.response.use(
         } catch (error) {
           localStorage.removeItem("token-auth");
 
-          window.location.href = "/login";
+          window.location.href = "/";
 
           return Promise.reject(error);
         } finally {
@@ -61,4 +63,5 @@ httpClient.interceptors.response.use(
 
 export default {
   auth: AuthService(httpClient),
+  user: UserService(httpClient)
 };
