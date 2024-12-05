@@ -19,13 +19,9 @@ export const useAuthStore = defineStore("auth", () => {
   async function userLogout() {
     try {
       const response = await api.auth.userLogout();
-      localStorage.removeItem("token-auth")
-      router.push('/')
-      return response.data;
 
-    } catch (error) {
-      console.log(error);
-    }
+      return response.data;
+    } catch (error) {}
   }
 
   return {

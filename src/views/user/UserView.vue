@@ -102,7 +102,7 @@ onMounted(async () => {
       <div v-if="!loading && user" class="container w-[600px] sm:w-full sm:p-2 pt-5 flex flex-col justify-center">
         <div class="user-img flex gap-1 items-center mb-5">
           <img
-            src="../../assets/img/png/user_default_large.png"
+            src="../../assets/img/user_default_large.png"
             alt=""
             width="200px"
             v-if="!user.user_img"

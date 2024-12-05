@@ -22,7 +22,7 @@ const handleSubmit = async () => {
   if (login) {
     localStorage.setItem("token-auth", login.token);
 
-    router.push({ path: "/about" });
+    router.push({ path: "/perfil" });
   } else {
     error.value = true;
 
