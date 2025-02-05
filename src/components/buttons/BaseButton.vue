@@ -8,10 +8,7 @@ const props = defineProps({
 
 <template>
   <button
-    :class="[
-      'py-1 px-4 bg-secondary text-white rounded-md transition duration-300',
-      props.disabled ? 'opacity-30 bg-secondary cursor-not-allowed' : 'hover:bg-primary'
-    ]"
+    :class="props.disabled ? 'disabled' : ''"
     :disabled="props.disabled"
     @click="props.customCLick"
   >
@@ -19,6 +16,25 @@ const props = defineProps({
   </button>
 </template>
 
-<style scoped>
-/* As classes customizadas 'bg-secondary' e 'bg-primary' podem ser definidas no seu arquivo de configuração Tailwind ou substituídas por cores Tailwind específicas. */
+<style>
+button {
+  padding: 0.3rem 1rem;
+  background-color: #636363;
+  border-radius: 8px;
+  color: #fff;
+
+  &:hover {
+    background-color: #E5E5E5;
+    transition: 0.3s;
+  }
+}
+
+.disabled {
+  opacity: 0.3;
+  background-color: #2D2D2D !important;
+
+  &:hover {
+    background-color: #2D2D2D;
+  }
+}
 </style>

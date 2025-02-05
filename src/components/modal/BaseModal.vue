@@ -92,7 +92,7 @@ export default {
   </Transition>
 </template>
 
-<style scoped lang="scss">
+<style>
 .backdrop {
   display: flex;
   justify-content: center;
@@ -118,7 +118,8 @@ export default {
     padding: 1.5rem;
     height: fit-content;
     width: fit-content;
-    background: #fff;
+    color: white;
+    background: #2b1511;
     box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.25);
     border-radius: 1rem;
     overflow: auto;

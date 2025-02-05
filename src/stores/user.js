@@ -15,9 +15,32 @@ export const userStore = defineStore("user", () => {
     }
   }
 
+  async function uploadImg(formData) {
+    try {
+      const response = await api.user.uploadImg(formData); // Envia o formData com a imagem
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async function alterPassword(payload) {
+    try {
+      const response = await api.user.alterPassword(payload)
+      return response.data
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+    
+  }
+
   return {
     user,
     userPerfil,
+    uploadImg,
+    alterPassword
   }
 });
 

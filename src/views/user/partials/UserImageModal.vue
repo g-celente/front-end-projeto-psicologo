@@ -9,7 +9,7 @@ import BaseAlertSuccess from "@/components/Alert/BaseAlertSuccess.vue";
 import BaseModal from "@/components/modal/BaseModal.vue";
 
 const usersStore = userStore();
-const { userPerfil } = usersStore;
+const { userPerfil, uploadImg } = usersStore;
 
 const props = defineProps({
   open: Boolean,
@@ -20,23 +20,34 @@ const route = useRoute();
 
 const error = ref(false);
 const textSuccess = ref("");
-const textError = ref("Preencha todos os campos obrigatórios!");
+const textError = ref("Falha ao alterar foto de perfil!");
 const emit = defineEmits(["update:open", "update:refresh"]);
 
 const success = ref(false);
 
+const fileInput = ref(null); // Referência para o input de arquivo
+
+// Função para lidar com o envio do arquivo de imagem
 const handlePayload = async () => {
-  const response = await userPerfil(props.info);
-  if (response) {
-    textSuccess.value = "Foto de Perfil Alterada com Sucesso!!";
-    success.value = true;
-    emit("update:refresh");
-    setTimeout(() => success.value = false, 3000);
-  } else {
-    textError.value = "Falha ao Alterar Foto de Perfil!!!";
-    error.value = true;
-    setTimeout(() => error.value = false, 3000);
-  }
+    const formData = new FormData();
+
+    // Adicionando o arquivo ao FormData
+    if (fileInput.value.files.length > 0) {
+        formData.append("image", fileInput.value.files[0]);
+    }
+
+    // Enviar para o backend
+    const response = await uploadImg(formData);
+    if (response) {
+        textSuccess.value = "Foto de Perfil Alterada com Sucesso!!";
+        success.value = true; // Armazena a URL da imagem
+        emit("update:refresh");
+        setTimeout(() => success.value = false, 3000);
+    } else {
+        textError.value = "Falha ao Alterar Foto de Perfil!!!";
+        error.value = true;
+        setTimeout(() => error.value = false, 3000);
+    }
 };
 
 watch(
@@ -63,11 +74,13 @@ const handleClose = () => {
     <template v-slot:body>
       <div class="mt-4 space-y-4">
         <div class="flex flex-col gap-2">
-          <label class="font-semibold">URL da Imagem</label>
-          <BaseInput
+          <label class="font-semibold">Selecione uma nova imagem</label>
+          <input
+            ref="fileInput"
+            type="file"
             class="input p-3 border rounded-md"
-            v-model="props.info.user_img"
-            placeholder="URL da imagem"
+            accept="image/*"
+            @change="handlePayload"
           />
         </div>
       </div>
@@ -88,6 +101,7 @@ const handleClose = () => {
     role="alert"
   ></BaseAlertSuccess>
 </template>
+
 
 <style scoped lang="scss">
 .input {

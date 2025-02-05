@@ -8,29 +8,35 @@ const props = defineProps({
 </script>
 
 <template>
-  <input
+  <textarea
     :placeholder="props.placeholder"
     :value="props.modelValue"
     :class="props.disabled ? 'disabled' : ''"
     @input="$emit('update:modelValue', $event.target.value)"
     v-bind="$attrs"
-  />
+    :disabled="props.disabled"
+    rows="8"
+  ></textarea>
 </template>
 
-<style>
+<style scoped lang="scss">
 .container {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 3rem;
 }
 
-input {
-  border-radius: 5px;
-  padding: 0.15rem 0.3rem; /* Diminuir o padding */
-  border: 2px solid #f5f5f5;
+textarea {
+  border-radius: 8px;
+  padding: 0.2rem 0.5rem;
+  border: 2px solid #24242475;
   width: 100%;
-  font-size: 0.875rem;
-  background-color: #e9e9e9; /* Ajusta o tamanho da fonte */
+
+  box-sizing: border-box;
+  resize: none; /* remove as opções de redimensionamento */
 }
 
+.disabled {
+  background-color: rgba(187, 187, 187, 0.53);
+}
 </style>

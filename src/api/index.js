@@ -4,7 +4,7 @@ import AuthService from "./services/auth.js";
 import UserService from "./services/user.js"
 import { h } from "vue";
 
-const baseURL = "https://api-psicologo-ia.vercel.app"
+const baseURL = "https://api-psicologo-ia.vercel.app/"
 
 const httpClient = axios.create({ baseURL });
 

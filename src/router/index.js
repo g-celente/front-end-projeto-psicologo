@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import beforeEach from './beforeEach.js'
+import TheContainer from '@/components/TheContainer.vue'
 
 
 const router = createRouter({
@@ -12,15 +13,28 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/about',
+      path: '/home',
+      name: 'Home',
+      component: TheContainer,
       meta: { requiresAuth: true},
-      component: () => import('../views/AboutView.vue'),
+      children: [
+        {
+          path: '',
+          name: 'About',
+          component: () => import('../views/AboutView.vue')
+        },
+        {
+          path: '/chat',
+          name: 'Chat',
+          component: () => import('../views/ChatView.vue')
+        },
+        {
+          path: '/perfil',
+          meta: { requiresAuth: true},
+          component: () => import('../views/user/UserView.vue')
+        }
+      ]
     },
-    {
-      path: '/perfil',
-      meta: { requiresAuth: true},
-      component: () => import('../views/user/UserView.vue')
-    }
   ],
 })
 
