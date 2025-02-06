@@ -277,6 +277,18 @@ span {
 label {
   color: white;
 }
+
+@media (max-width: 450px){
+  .container {
+    padding: 0px;
+  }
+
+  .page-background {
+    margin-top: 0px;
+    padding: 20px;
+  }
+}
+
 </style>
 
 

@@ -76,7 +76,7 @@ onMounted(async () => {
           
           <!-- Mensagem do usuário (direita) -->
           <div v-if="message.role === 'user'" class="flex justify-end gap-3 w-full ml-auto w-full p-6">
-            <div class="flex-messages flex-col w-full max-w-[350px] leading-1.5 p-5 border border-gray-300 bg-gray-900 text-gray-200 rounded-2xl break-words whitespace-pre-wrap">
+            <div class="flex-messages flex-col w-full max-w-[350px] leading-1.5 p-5 border border-gray-300 bg-[#2B1511] text-gray-200 rounded-2xl break-words whitespace-pre-wrap">
               <div class="flex items-center space-x-2">
                 <span class="text-sm font-semibold">Você</span> <!-- Afastando mais da borda -->
                 <span class="text-sm font-normal text-gray-200">11:46</span> <!-- Afastando mais da borda -->
@@ -88,10 +88,10 @@ onMounted(async () => {
           <!-- Mensagem do assistente (esquerda) -->
           <div v-if="message.role === 'assistant'" class="flex items-start gap-3 w-full">
             <img class="w-10 h-10 rounded-full" src="../assets/img/logo freud.png" alt="Assistant image">
-            <div class="flex-messages flex-col w-full max-w-[350px] leading-1.5 p-5 border border-gray-300 bg-gray-900 text-gray-200 rounded-2xl break-words whitespace-pre-wrap">
+            <div class="flex-messages flex-col w-full max-w-[350px] leading-1.5 p-5 border border-gray-300 bg-[#D2AC67] text-gray-950 rounded-2xl break-words whitespace-pre-wrap">
               <div class="flex items-center space-x-2">
                 <span class="text-sm font-semibold text-gray-900 dark:text-white">Freud Psicólogo</span>
-                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+                <span class="text-sm font-normal text-gray-800 dark:text-gray-800">11:46</span>
               </div>
               <span class="text-sm font-normal py-2.5">{{ message.content }}</span>
             </div>
@@ -141,7 +141,7 @@ onMounted(async () => {
   }
 
   .message-input {
-    width: 70%; /* Aumenta a largura da caixa de entrada em dispositivos móveis */
+    width: 90%; /* Aumenta a largura da caixa de entrada em dispositivos móveis */
     padding: 12px;
     font-size: 16px;  /* Ajusta o tamanho da fonte */
   }
@@ -159,40 +159,6 @@ onMounted(async () => {
   }
   .flex-messages {
     max-width: 200px;
-  }
-
-  @media (max-width: 450px) {
-    .flex-messages {
-      max-width: 150px;
-    }
-
-    .chat-title {
-      padding: 0px;
-    }
-
-    .messages {
-      flex: 0;
-    }
-
-    .chat {
-      padding: 1px;
-    }
-    .message-input {
-      width: 65%; /* Aumenta a largura da caixa de entrada em dispositivos móveis */
-      padding: 6px;
-      font-size: 16px;  /* Ajusta o tamanho da fonte */
-    }
-
-    .message-submit {
-      width: 35%; /* Garante que o botão de envio ocupe toda a largura */
-      padding: 6px;
-      font-size: 16px;
-      margin-top: 10px; /* Espaçamento entre a caixa de texto e o botão */
-    }
-
-    .message-box {
-      padding: 5px;
-    }
   }
 }
 
@@ -299,6 +265,25 @@ onMounted(async () => {
 
 .message-submit:hover {
   background: #0066cc;
+}
+
+@media (max-width: 450px) {
+  .flex-messages {
+    max-width: 55%; /* Aumente o tamanho das mensagens */
+  }
+
+  .chat-title {
+    padding: 20px;
+  }
+
+  .messages {
+    flex: 1;
+  }
+
+  .chat {
+    padding-left: 15px;
+    padding-right: 15px; /* Reduza o padding da lateral para que o chat ocupe quase toda a largura */
+  }
 }
 
 
