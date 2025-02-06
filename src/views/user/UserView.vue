@@ -126,50 +126,45 @@ onMounted(async () => {
               <div class="flex flex-wrap gap-4 mb-6">
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Nome de Usuário:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.nome" />
+                  <BaseInput class="p-3 w-full" v-model="user.nome" :disabled="true" />
                 </div>
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Email:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.email" />
+                  <BaseInput class="p-3 w-full" v-model="user.email" :disabled="true" />
                 </div>
               </div>
 
               <div class="flex flex-wrap gap-4 mb-6">
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Telefone:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.phone" />
+                  <BaseInput class="p-3 w-full" v-model="user.phone" :disabled="true" />
                 </div>
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Endereço:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.address.line1" />
+                  <BaseInput class="p-3 w-full" v-model="user.address.line1" :disabled="true"/>
                 </div>
               </div>
 
               <div class="flex flex-wrap gap-4 mb-6">
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Cidade:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.address.city" />
+                  <BaseInput class="p-3 w-full" v-model="user.address.city" :disabled="true" />
                 </div>
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">País:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.address.country" />
+                  <BaseInput class="p-3 w-full" v-model="user.address.country" :disabled="true"/>
                 </div>
               </div>
 
               <div class="flex flex-wrap gap-4 mb-6">
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">Estado:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.address.state" />
+                  <BaseInput class="p-3 w-full" v-model="user.address.state" :disabled="true" />
                 </div>
                 <div class="flex-1">
                   <label class="block text-sm font-medium text-gray-700">CEP:</label>
-                  <BaseInput class="p-3 w-full" v-model="user.address.postal_code" />
+                  <BaseInput class="p-3 w-full" v-model="user.address.postal_code" :disabled="true" />
                 </div>
-              </div>
-
-              <div class="flex justify-end gap-4">
-                <BaseButton class="bg-gray-800 text-white" label="Editar" />
-                <BaseButton label="Salvar" @click="handleUpdate" />
               </div>
             </div>
           </div>
@@ -222,8 +217,34 @@ onMounted(async () => {
     </div>
     <div v-else class="loading">
         <BaseLoading class="loading-icon" />
-      </div>
+    </div>
   </div>
+  <footer class="bg-[#2B1511] shadow-sm dark:bg-[#2B1511]  w-full">
+            <div class="p-4">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <a href="" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                        <img src="../../assets/img/logo freud.png" class="h-8 ml-4" alt="Flowbite Logo" />
+                        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Freud Psicólogo</span>
+                    </a>
+                    <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+                        <li>
+                            <a href="#" class="hover:underline me-4 md:me-6">Quem Somos</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:underline me-4 md:me-6">Políticas de Privacidade</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:underline me-4 md:me-6">Termos</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:underline">Contato</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+                <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="https://flowbite.com/" class="hover:underline">FreudPsicologo™</a>. Todos Direitos Reservados.</span>
+            </div>
+        </footer>
 </template>
 
 
@@ -243,10 +264,6 @@ onMounted(async () => {
       height: 100px;
     }
   }
-}
-
-.page-background {
-  margin-top: 20px;
 }
 
 .flex-1 {

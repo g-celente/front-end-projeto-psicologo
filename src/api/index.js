@@ -2,9 +2,11 @@ import axios from "axios";
 
 import AuthService from "./services/auth.js";
 import UserService from "./services/user.js"
+import ConversationService from "./services/conversation.js"
 import { h } from "vue";
+import conversation from "./services/conversation.js";
 
-const baseURL = "https://api-psicologo-ia.vercel.app/"
+const baseURL = "http://localhost:3000/"
 
 const httpClient = axios.create({ baseURL });
 
@@ -63,5 +65,6 @@ httpClient.interceptors.response.use(
 
 export default {
   auth: AuthService(httpClient),
-  user: UserService(httpClient)
+  user: UserService(httpClient),
+  conversation: ConversationService(httpClient)
 };

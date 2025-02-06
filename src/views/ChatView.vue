@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { conversationStore } from "@/stores/conversation";
+
+const conversation = conversationStore()
 
 // Criação de referências reativas para armazenar as mensagens e a nova mensagem
 const messages = ref([]);
@@ -7,49 +10,54 @@ const newMessage = ref("");
 
 // Função para buscar mensagens iniciais (simulando uma chamada API)
 const getMessages = async () => {
-  return [
-    {
-      id: 1,
-      role: "user",
-      content: "Olá Freud",
-    },
-    {
-      id: 2,
-      role: "assistant",
-      content: "Olá Guilherme",
-    }
-  ];
+  
+  try {
+    const response = await conversation.getMessages()
+
+    console.log(response)
+
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+
 };
 
 // Função para inicializar a conversa e popular o array reativo de mensagens
 const initFunction = async () => {
-  const fetchedMessages = await getMessages();
-  messages.value.push(...fetchedMessages); // Adiciona as mensagens ao array reativo
+  messages.value = await getMessages(); // Adiciona as mensagens ao array reativo
 };
 
 // Função para enviar a mensagem
-const sendMessage = () => {
+const sendMessage = async () => {
   if (newMessage.value.trim() === "") return; // Verifica se a mensagem não está vazia
 
-  // Adiciona a mensagem do usuário ao histórico
+  // Adiciona a mensagem ao array de mensagens localmente antes de enviar
   messages.value.push({
-    id: messages.value.length + 1,
-    role: "user",
+    id: Date.now(), // Gera um ID temporário
     content: newMessage.value,
+    role: "user", // Define o papel do usuário
   });
 
-  // Simulação da resposta do assistente
-  setTimeout(() => {
-    messages.value.push({
-      id: messages.value.length + 1,
-      role: "assistant",
-      content: "Resposta automática do assistente",
-    });
-  }, 1000);
+  const userMessage = ref({
+    message: newMessage.value,
+  }) // Armazena a mensagem do usuário
+  newMessage.value = ""; // Limpa o campo de input imediatamente
 
-  // Limpa o campo de input
-  newMessage.value = "";
+  try {
+    const response = await conversation.sendMessage(userMessage.value); // Envia a mensagem ao servidor
+
+    // Adiciona a resposta ao array de mensagens
+    messages.value.push({
+      id: Date.now() + 1, // Gera um novo ID para a mensagem de resposta
+      content: response, // Substitua pelo campo correto da resposta
+      role: "assistant", // Define o papel do assistente
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
+
 
 // Chama a função de inicialização quando o componente for montado
 onMounted(async () => {
@@ -61,9 +69,6 @@ onMounted(async () => {
   <div class="page-background">
     <div class="chat">
       <div class="chat-title">
-        <div class="avatar">
-          <img src="../assets/img/logo freud.png" alt="Avatar" />
-        </div>
         <h1>Freud Psicólogo</h1>
       </div>
       <div class="messages">
@@ -95,13 +100,23 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="message-box">
-        <textarea 
-          v-model="newMessage" 
-          class="message-input" 
-          placeholder="Digite sua mensagem..."
-        ></textarea>
-        <button class="message-submit" @click="sendMessage">Enviar</button>
+      <div class="message-box"> 
+        <label for="chat" class="sr-only">Sua mensagem</label>
+        <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 w-[80%]">
+          <textarea 
+            id="chat"
+            v-model="newMessage" 
+            rows="1" 
+            class="block mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="Digite sua mensagem..."
+          ></textarea>
+          <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+            <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20" @click="sendMessage">
+              <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z"/>
+            </svg>
+            <span class="sr-only">Enviar mensagem</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -190,11 +205,13 @@ onMounted(async () => {
   color: white;
   border-radius: 0;
   overflow: hidden;
-  padding: 50px;
   background-image: url(../assets/img/Sigmund-Freuds-Life-Lessons-You-Should-Know-Before-You-Get-Old.jpg);
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+  padding: 50px;
 }
+
 
 .chat-title {
   flex: 0 1 70px;
@@ -203,6 +220,10 @@ onMounted(async () => {
   padding: 20px;
   font-size: 22px;
   font-weight: bold;
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  
 }
 
 .chat-title .avatar {
@@ -212,12 +233,16 @@ onMounted(async () => {
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.5);
+  position: fixed;
+  z-index: 2;
 }
 
 .chat-title .avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: fixed;
+  z-index: 2;
 }
 
 .messages {
@@ -225,23 +250,30 @@ onMounted(async () => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  margin-top: 90px; /* Ajusta para ficar abaixo da barra de título fixa */
+  margin-bottom: 90px; /* Adiciona espaço para a caixa de input de mensagem */
 }
+
 
 .flex-messages {
   padding: 10px;
 }
 
 .message-box {
-  flex: 0 1 80px;
+  width: 100%; /* Garante que a message-box ocupe toda a largura do container do chat */ /* Adicione um valor máximo, se necessário, para limitar a largura em telas grandes */
+  margin: 0 auto; /* Centraliza a message-box */
+  position: fixed; /* Fixa na parte inferior */
+  bottom: 0; /* Alinha a message-box no fundo */ /* Garante que a box esteja centralizada */
   display: flex;
   align-items: center;
   padding: 15px;
-  background: rgba(0, 0 , 0, 0.5);
-  border-radius: 20px;
+  border-radius: 0px 0px 10px 10px; /* Arredonda os cantos superiores */
+  z-index: 2;
 }
 
 .message-input {
   flex: 1;
+  max-width: 80%; /* Limita a largura máxima do campo de texto para evitar que ele ocupe todo o espaço */
   padding: 15px;
   font-size: 18px;
   border-radius: 10px;
@@ -249,10 +281,11 @@ onMounted(async () => {
   outline: none;
   background: rgba(255, 255, 255, 0.2);
   color: white;
+  margin-right: 10px;
 }
 
 .message-submit {
-  margin-left: 15px;
+  flex: 0 0 auto;
   padding: 15px 20px;
   font-size: 18px;
   background: #0084ff;
@@ -263,8 +296,10 @@ onMounted(async () => {
   transition: 0.2s;
 }
 
+
 .message-submit:hover {
   background: #0066cc;
 }
+
 
 </style>
