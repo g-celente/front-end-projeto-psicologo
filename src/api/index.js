@@ -6,7 +6,7 @@ import ConversationService from "./services/conversation.js"
 import { h } from "vue";
 import conversation from "./services/conversation.js";
 
-const baseURL = "http://localhost:3000/"
+const baseURL = "https://api-psicologo-ia.vercel.app"
 
 const httpClient = axios.create({ baseURL });
 
