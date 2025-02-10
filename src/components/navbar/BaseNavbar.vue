@@ -84,6 +84,7 @@ onMounted(async () => {
     >
     <div class="h-full flex flex-col px-3 pb-4 bg-[#2B1511] dark:bg-[#2B1511]">
       <ul class="space-y-2 font-medium">
+        <!--
         <li>
             <router-link to="/home">
               <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -94,7 +95,7 @@ onMounted(async () => {
                 <span class="ms-3">Home</span>
               </a>
             </router-link>
-        </li>
+        </li> -->
         <!-- Botão de Chat Ao Vivo -->
         <li>
             <router-link to="/chat">

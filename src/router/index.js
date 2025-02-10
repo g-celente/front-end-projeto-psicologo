@@ -18,11 +18,13 @@ const router = createRouter({
       component: TheContainer,
       meta: { requiresAuth: true},
       children: [
+        /*
         {
           path: '',
           name: 'Page',
           component: () => import('../views/HomeView.vue')
         },
+        */
         {
           path: '/chat',
           name: 'Chat',

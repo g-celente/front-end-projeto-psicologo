@@ -3,7 +3,7 @@ export default async (to) => {
     const token = localStorage.getItem('token-auth')
 
     if (to.name === "login" && token) {
-        return { path: `/about`}
+        return { path: `/home`}
     }
 
     if (to.meta.requiresAuth) {
